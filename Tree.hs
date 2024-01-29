@@ -17,3 +17,14 @@ buildExpr e1 op e2 = case op of
     "-" -> Sub e1 e2
     "*" -> Mul e1 e2
     "/" -> Div e1 e2
+
+mapValues :: [String] -> [ASTree]
+mapValues [] = []
+mapValues (x:xs) = Value (read x :: Int) : mapValues xs
+
+buildExprList :: [String] -> [ASTree] -> ASTree
+buildExprList [] [x] = x
+buildExprList (op:ops) (x:y:xs) = buildExprList ops ((buildExpr x op y):xs)
+
+buildAST :: ([String], [String]) -> ASTree
+buildAST (ops, vals) = buildExprList ops (mapValues vals)
