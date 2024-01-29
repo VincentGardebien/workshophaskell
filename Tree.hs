@@ -11,3 +11,9 @@ instance Show ASTree where
     show (Div e1 e2) = show e1 ++ " / " ++ show e2
     show (Value n)   = show n
 
+buildExpr :: ASTree -> String -> ASTree -> ASTree
+buildExpr e1 op e2 = case op of
+    "+" -> Add e1 e2
+    "-" -> Sub e1 e2
+    "*" -> Mul e1 e2
+    "/" -> Div e1 e2
