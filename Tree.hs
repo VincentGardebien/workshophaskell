@@ -28,3 +28,10 @@ buildExprList (op:ops) (x:y:xs) = buildExprList ops ((buildExpr x op y):xs)
 
 buildAST :: ([String], [String]) -> ASTree
 buildAST (ops, vals) = buildExprList ops (mapValues vals)
+
+manageAST :: ASTree -> Int
+manageAST (Value a) = a
+manageAST (Add a b) = manageAST a + manageAST b
+manageAST (Sub a b) = manageAST a - manageAST b
+manageAST (Mul a b) = manageAST a * manageAST b
+manageAST (Div a b) = manageAST a `div` manageAST b

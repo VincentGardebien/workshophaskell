@@ -1,12 +1,15 @@
+module Parse where
 import Data.Char (isDigit)
 
 isNum :: String -> Bool
 isNum [] = False
-isNum = all isDigit
+isNum (x:xs) | isDigit x = isNum xs
+             | otherwise = False
 
 isOperator :: String -> Bool
 isOperator [] = False
-isOperator = (`elem` ["+", "-", "*", "/"])
+isOperator (x:xs) | x == '+' || x == '-' || x == '*' || x == '/' = True
+                  | otherwise = False
 
 
 filterArr :: (a -> Bool) -> [a] -> [a]
@@ -16,4 +19,6 @@ filterArr f (x:xs) | f x = x : filterArr f xs
 
 parseLine :: [String] -> [String]
 parseLine [] = []
-parseLine xs = filter (not . isNum) xs ++ filter isNum xs
+parseLine (x:xs) | isNum x = x : parseLine xs
+                 | isOperator x = x : parseLine xs
+                 | otherwise = parseLine xs

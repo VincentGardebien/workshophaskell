@@ -1,5 +1,7 @@
 import  Operation
 import  System.Environment
+import  Parse
+import  Tree
 import System.Exit
 
 
@@ -16,9 +18,13 @@ doOp args
     | (args !! 1) /= "+" && (args !! 1) /= "-" && (args !! 1) /= "*" && (args !! 1) /= "/" = exitWith (ExitFailure 84)
     | otherwise = doOperation (args !! 0) (args !! 2) (args !! 1)
 
+parseList :: [String] -> ([String], [String])
+parseList [] = ([], [])
+parseList x = (filterArr isOperator x, filterArr isNum x)
+
 main::IO()
 main = do
-
-input <- getLine
-let args = words input
-doOp args
+    input <- getLine
+    let (ops, vals) = parseList (words input)
+        ast = buildAST (ops, vals)
+    putStrLn (show (manageAST ast))
